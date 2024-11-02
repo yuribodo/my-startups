@@ -4,7 +4,7 @@ import React from 'react'
 import { auth, signOut, signIn } from '@/auth';
 
 const Navbar = async () => {
-  const session = await auth()
+  const session = await auth();
 
   return (
     <header className=" shadow-sm px-5 py-3 bg-white font-work-sans text-black">
@@ -13,14 +13,14 @@ const Navbar = async () => {
           <Image 
             src="/logo.svg" 
             alt="logo" 
-            width={100} 
-            height={28} 
+            width={144} 
+            height={30} 
             className="object-contain"
           />
         </Link>
 
 
-        <div className=''> 
+        <div className='flex items-center gap-5'> 
           {session && session?.user ? (
             <>
               <Link href="/startup/create">
