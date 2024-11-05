@@ -7,6 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -20,7 +21,7 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
   });
 
   return (
-    <Card className="w-[340px] border border-gray-200 shadow-sm hover:shadow-lg rounded-lg transition-all duration-300 group">
+    <Card className="w-[340px] border border-gray-200 shadow-sm hover:shadow-lg rounded-lg transition-all duration-300 group ">
       <CardHeader className="space-y-4">
         <div className="flex items-center justify-between">
           <span className="flex items-center bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-sm font-medium">
@@ -39,19 +40,22 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
             <div>
               <p>{post?.author?.name}</p>
               <CardTitle className="text-2xl font-bold leading-tight text-gray-800 group-hover:text-blue-600 transition-colors duration-200">
-                <Link href="/user/name">
                   {post?.title}
-                </Link>
               </CardTitle>
             </div>
             
             <Avatar className="border border-gray-200 ml-2">
-              <AvatarImage src={post?.author?.image || "https://github.com/shadcn.png"} />
-              <AvatarFallback>{post?.author?.name?.charAt(0)}</AvatarFallback>
+              <Link href="/user/name">
+                <AvatarImage src={post?.author?.image || "https://github.com/shadcn.png"} />
+                <AvatarFallback>{post?.author?.name?.charAt(0)}</AvatarFallback>
+              </Link>
             </Avatar>
           </div>
           <CardDescription className="text-gray-500 font-medium">
-            {post?.description}
+            <Link href={`/startup/${post?._id}`}>
+              {post?.description}
+            </Link>
+            
           </CardDescription>
         </div>
       </CardHeader>
@@ -62,16 +66,25 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
             src="/startupimg.jpg" 
             alt={post?.title || "Startup image"} 
             layout="fill"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover "
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black opacity-30"></div>
+        </div>
+        <div className="px-4 py-2">
+          <Link href={`/?query=${post?.category.toLowerCase()}`}>
+           <p className="font-semibold">{post?.category}</p>
+          </Link>
+          
         </div>
       </CardContent>
 
       <CardFooter className="flex justify-between items-center pt-4 text-gray-600">
-        <button className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
-          Ler mais
-        </button>
+        <Link href={`/startup/${post?._id}`}>
+          <Button className="text-sm font-semibold hover:text-blue-700 transition-colors">
+            Ler mais
+          </Button>
+        </Link>
+        
         
         <div className="flex space-x-2">
           <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
