@@ -11,6 +11,9 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Author, Startup } from "@/sanity/types"
+
+export type StartupTypeCard = Omit<Startup, "author"> & {author? : Author};
 
 
 const StartupCard = ({ post }: { post: StartupTypeCard }) => {
@@ -45,7 +48,7 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
             </div>
             
             <Avatar className="border border-gray-200 ml-2">
-              <Link href="/user/name">
+              <Link href={`/user/${post?.author?._id}`}>
                 <AvatarImage src={post?.author?.image || "https://github.com/shadcn.png"} />
                 <AvatarFallback>{post?.author?.name?.charAt(0)}</AvatarFallback>
               </Link>
@@ -66,7 +69,7 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black opacity-30"></div>
         </div>
         <div className="px-4 py-2">
-          <Link href={`/?query=${post?.category.toLowerCase()}`}>
+          <Link href={`/?query=${post?.category?.toLowerCase()}`}>
            <p className="font-semibold">{post?.category}</p>
           </Link>
           
