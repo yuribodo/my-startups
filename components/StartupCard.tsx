@@ -65,7 +65,16 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
 
       <CardContent className="p-0">
         <div className="relative w-full h-48 overflow-hidden">
-            <img src={post?.image} alt="image" />
+          {post?.image && (
+              <Image
+                src={post.image}
+                alt="image"
+                width={500} 
+                height={300} 
+                layout="responsive"
+                objectFit="cover"
+              />
+            )}
           <div className="absolute inset-0 bg-gradient-to-t from-black opacity-30"></div>
         </div>
         <div className="px-4 py-2">
