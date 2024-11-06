@@ -1,6 +1,8 @@
 import { p } from "framer-motion/client";
 import SearchForm from "../../components/SearchForm";
 import StartupCard from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 
 export default async function Home({searchParams}: {
   searchParams: Promise<{query: string}>
@@ -8,19 +10,9 @@ export default async function Home({searchParams}: {
 
   const query = (await searchParams).query;
 
-  const posts = [
-    {
-      _createdAt: "Yesterday",
-      views: 34,
-      author: {_id: 1, name: 'Eduard'},
-      _id: 1,
-      description: "Description",
-      image: "https://www.fumec.br/wp-content/uploads/2024/07/team_party2-01-2048x970.jpg",
-      category: "Robots",
-      title: "Our Robots",
-    }
-  ]
-
+  const posts = await client.fetch(STARTUPS_QUERY)
+  console.log(JSON.stringify(posts, null, 2))
+    
   return (
     <>
       <section className="w-full pattern-diagonal bg-blue-950 min-h-[530px] flex justify-center items-center flex-col py-10 px-6">
