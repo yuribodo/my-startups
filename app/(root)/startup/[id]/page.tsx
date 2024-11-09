@@ -33,7 +33,7 @@ const Page = async ({params} : {params: Promise<{id: string}>}) => {
   if(!post) return notFound();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  py-8 px-4 sm:px-6 lg:px-8">
       <Card className="max-w-4xl mx-auto bg-white shadow-lg">
         <CardHeader className="space-y-6">
           <div className="flex items-center justify-between">
