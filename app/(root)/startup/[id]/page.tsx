@@ -1,12 +1,17 @@
 import { STARTUP_BY_ID_QUERY } from '@/sanity/lib/queries'
 import { client } from '@/sanity/lib/client'
-import React from 'react'
+import React, {Suspense} from 'react'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Link, MapPin, Users, Presentation } from 'lucide-react'
+import markdownit from 'markdown-it'
+import Views from '@/components/Views'
+
+const md = markdownit()
 
 interface StartupPost {
   title?: string;
@@ -30,6 +35,8 @@ const Page = async ({params} : {params: Promise<{id: string}>}) => {
   const id = (await params).id
   const post: StartupPost = await client.fetch(STARTUP_BY_ID_QUERY, { id });
 
+  const parsedContent = md.render(post?.pitch || '')
+
   if(!post) return notFound();
 
   return (
@@ -51,6 +58,8 @@ const Page = async ({params} : {params: Promise<{id: string}>}) => {
           <h1 className="text-4xl font-bold tracking-tight text-gray-900">
             {post?.title}
           </h1>
+
+          
           
           <p className="text-xl text-gray-500 leading-relaxed">
             {post?.description}
@@ -129,6 +138,23 @@ const Page = async ({params} : {params: Promise<{id: string}>}) => {
             </div>
             <div className="bg-gradient-to-r from-blue-50 to-white p-8 rounded-xl">
               <div className="prose prose-lg max-w-none">
+                {parsedContent ? (
+                  <article dangerouslySetInnerHTML={{__html: parsedContent}}/>
+            
+                ) : (
+                  <p className='text-lg leading-relaxed text-gray-700'>
+                    Nossa startup está revolucionando o mercado através de soluções inovadoras que 
+                  combinam tecnologia de ponta com necessidades reais do mercado. Com uma abordagem única, 
+                  estamos transformando a maneira como as pessoas interagem com [área de atuação].
+
+                  Nossa solução não apenas resolve problemas existentes, mas também cria novas 
+                  oportunidades para nossos usuários. Com métricas comprovadas de sucesso e um time 
+                  altamente qualificado, estamos prontos para escalar e atingir novos mercados.
+
+                  Buscamos parceiros estratégicos que compartilhem nossa visão de futuro e queiram 
+                  fazer parte desta jornada de transformação.
+                  </p>
+                )}
                 <p className="text-lg leading-relaxed text-gray-700">
                   {post?.pitch || `Nossa startup está revolucionando o mercado através de soluções inovadoras que 
                   combinam tecnologia de ponta com necessidades reais do mercado. Com uma abordagem única, 
@@ -141,23 +167,17 @@ const Page = async ({params} : {params: Promise<{id: string}>}) => {
                   Buscamos parceiros estratégicos que compartilhem nossa visão de futuro e queiram 
                   fazer parte desta jornada de transformação.`}
                 </p>
-                {post?.pitchPoints && (
-                  <ul className="mt-6 space-y-2">
-                    {post.pitchPoints.map((point: string, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 text-sm mr-3">
-                          {index + 1}
-                        </span>
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
+
+
+      <Suspense fallback={<Skeleton className='view_skeleton'/>}>
+        <Views id={id}/>
+      </Suspense>
     </div>
   )
 }
