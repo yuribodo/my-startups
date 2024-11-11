@@ -1,7 +1,13 @@
 import React from 'react'
 import Ping from './Ping'
+import { client } from '@/sanity/lib/client'
+import { STARTUP_VIEWS_QUERY } from '@/sanity/lib/queries'
 
-const Views = ({id}: {id: string}) => {
+const Views = async ({id}: {id: string}) => {
+
+    const {views: totalViews} = await client.withConfig({useCdn: false}).fetch(STARTUP_VIEWS_QUERY, {id})
+
+
   return (
     <div className='view-container'>
         <div className='absolute -top-2 -right-2'>
@@ -9,7 +15,7 @@ const Views = ({id}: {id: string}) => {
         </div>
 
         <p className='view-text '>
-            <span>100 views</span>
+            <span>{totalViews} views</span>
         </p>
     </div>
   )
