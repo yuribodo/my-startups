@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
     domains: ['imgs.search.brave.com'], 
   },
   experimental: {
-    ppr: 'incremental'
+    ppr: 'incremental',
+    after: true,
   },
   devIndicators: {
     appIsrStatus: true,
