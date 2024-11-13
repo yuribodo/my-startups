@@ -31,11 +31,8 @@ The My Startups Project is designed to help entrepreneurs showcase their startup
 ### Backend
 
 - **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
-- **Express**: A minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
 - **TypeScript**: Brings static typing to JavaScript, ensuring a more predictable runtime behavior.
 - **Jest**: Used for writing unit and integration tests for the backend.
-- **PostgreSQL**: A powerful, open-source object-relational database system.
-- **Nodemon**: A utility that monitors for any changes in your source and automatically restarts your server.
 - **Next.js**: A full-stack React framework that supports server-side rendering and API routes, allowing for building both frontend and backend logic within the same application.
 - **Sanity**: A headless CMS that allows for structured content management, offering a flexible schema system and real-time collaboration. Sanity provides APIs to fetch and manage content, making it ideal for dynamic web applications.
 
