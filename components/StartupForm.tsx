@@ -5,11 +5,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Rocket, Image, Tags, MessageSquare, PresentationIcon } from "lucide-react";
+import { Rocket, Image, Tags, MessageSquare, PresentationIcon, Send } from "lucide-react";
+import MDEditor from '@uiw/react-md-editor';
+
 
 const StartupForm = () => {
 
-    const [errors, setErrors] = useState<Record<string,string>>({})
+  const [errors, setErrors] = useState<Record<string,string>>({})
+  
+  const [pitch, setPitch] = useState("")
+
+  const isPending = false;
 
   return (
     <form action={() => {}}>
@@ -91,12 +97,21 @@ const StartupForm = () => {
                 <PresentationIcon className="w-5 h-5 text-purple-500" />
                 <h2 className="text-lg font-semibold">Pitch</h2>
               </div>
-              <Textarea 
-                className="min-h-[150px] border-2 border-purple-100 focus:border-purple-500 transition-colors" 
-                placeholder="Share your elevator pitch"
-                required
+              <MDEditor
+                data-color-mode='light'
+                value={pitch}
+                onChange={(value) => setPitch(value as string)}
                 id='pitch'
-                name='pitch'
+                preview='edit'
+                height={300}
+                style={{ borderRadius: 20, overflow: "hidden"}}
+                textareaProps={{
+                    placeholder:
+                        "Briefly describe your idea and what problem it solves",
+                }}
+                previewOptions={{
+                    disallowedElements: ["style"],
+                }}
               />
               {errors.pitch && <p>{errors.pitch}</p>}
             </div>
@@ -104,9 +119,12 @@ const StartupForm = () => {
             <div className="flex justify-end pt-4">
               <Button 
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-2 rounded-full transform transition-transform hover:scale-105"
+                disabled={isPending}
               >
-                Submit
+                {isPending ? 'Submiting...' : 'Submit your startup'}
+                <Send/>
               </Button>
+
             </div>
           </div>
         </CardContent>
