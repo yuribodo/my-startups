@@ -1,4 +1,6 @@
-import React from 'react'
+'use client';
+
+import React, { useState } from 'react'
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,9 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Rocket, Image, Tags, MessageSquare, PresentationIcon } from "lucide-react";
 
 const StartupForm = () => {
+
+    const [errors, setErrors] = useState<Record<string,string>>({})
+
   return (
-    <>
-         <Card className="max-w-2xl mx-auto  backdrop-blur-sm shadow-xl">
+    <form action={() => {}}>
+      <Card className="max-w-2xl mx-auto  backdrop-blur-sm shadow-xl">
         <CardContent className="p-6">
           <div className="flex items-center justify-center mb-8">
             <Rocket className="w-8 h-8 text-purple-500 mr-3" />
@@ -26,7 +31,12 @@ const StartupForm = () => {
               <Input 
                 className="border-2 border-purple-100 focus:border-purple-500 transition-colors" 
                 placeholder="Enter your startup name"
+                required
+                id='title'
+                name='title'
               />
+
+              {errors.title && <p>{errors.title}</p>}
             </div>
 
             <div className="space-y-2">
@@ -37,7 +47,12 @@ const StartupForm = () => {
               <Textarea 
                 className="min-h-[120px] border-2 border-purple-100 focus:border-purple-500 transition-colors" 
                 placeholder="Describe your startup in detail"
+                required
+                id='description'
+                name='description'
               />
+
+              {errors.description && <p>{errors.description}</p>}
             </div>
 
             <div className="space-y-2">
@@ -48,7 +63,12 @@ const StartupForm = () => {
               <Input 
                 className="border-2 border-purple-100 focus:border-purple-500 transition-colors" 
                 placeholder="e.g., SaaS, FinTech, E-commerce"
+                required
+                id='category'
+                name='category'
               />
+
+              {errors.category && <p>{errors.category}</p>}
             </div>
 
             <div className="space-y-2">
@@ -59,7 +79,11 @@ const StartupForm = () => {
               <Input 
                 className="border-2 border-purple-100 focus:border-purple-500 transition-colors" 
                 placeholder="Paste your image or video URL"
+                required
+                id='media'
+                name='media'
               />
+              {errors.media && <p>{errors.media}</p>}
             </div>
 
             <div className="space-y-2">
@@ -70,7 +94,11 @@ const StartupForm = () => {
               <Textarea 
                 className="min-h-[150px] border-2 border-purple-100 focus:border-purple-500 transition-colors" 
                 placeholder="Share your elevator pitch"
+                required
+                id='pitch'
+                name='pitch'
               />
+              {errors.pitch && <p>{errors.pitch}</p>}
             </div>
 
             <div className="flex justify-end pt-4">
@@ -83,7 +111,7 @@ const StartupForm = () => {
           </div>
         </CardContent>
       </Card>
-    </>
+    </form>
   )
 }
 
