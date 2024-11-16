@@ -9,6 +9,7 @@ import { Rocket, Image, Tags, MessageSquare, PresentationIcon, Send } from "luci
 import MDEditor from '@uiw/react-md-editor';
 import { formSchema } from '@/lib/validation';
 import {z} from 'zod'
+import { useToast } from '@/hooks/use-toast';
 
 
 const StartupForm = () => {
@@ -16,6 +17,7 @@ const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string,string>>({})
   
   const [pitch, setPitch] = useState("")
+  const {toast} = useToast()
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
@@ -35,6 +37,18 @@ const StartupForm = () => {
 
       //console.log(result)
 
+      //if (result.status == 'SUCCESS') {
+      //  toast({
+       // title: 'Success',
+      //  description: 'Your startup has beed created succesccfully',
+      //  variant: 'destructive'
+      //  })
+        
+      //  router.push(`/startup/${result.id}`)
+     // }
+
+      
+      //return result
 
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -42,14 +56,27 @@ const StartupForm = () => {
 
           setErrors(fieldErrors as unknown as Record<string, string>);
 
+          toast({
+            title: 'Error',
+            description: 'Please check your inputs and try again',
+            variant: 'destructive'
+          })
+
           return { ...prevState, error: 'Validation failed', status: "ERROR"}
         }
+
+      toast({
+          title: 'Error',
+          description: 'Please check your inputs and try again',
+          variant: 'destructive'
+        })
       
       return {
         ...prevState,
         error: 'An unexpected error has ocurred',
         status:  "ERROR",
       }
+      
     } 
   }  
 
