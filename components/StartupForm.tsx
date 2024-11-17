@@ -10,6 +10,8 @@ import MDEditor from '@uiw/react-md-editor';
 import { formSchema } from '@/lib/validation';
 import {z} from 'zod'
 import { useToast } from '@/hooks/use-toast';
+import { createPitch } from '@/lib/actions';
+import { useRouter } from 'next/navigation';
 
 
 const StartupForm = () => {
@@ -18,6 +20,7 @@ const StartupForm = () => {
   
   const [pitch, setPitch] = useState("")
   const {toast} = useToast()
+  const router = useRouter();
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
@@ -33,22 +36,22 @@ const StartupForm = () => {
 
       console.log(formValues)
 
-      //const result = await createIdea(prevState, formData, pitch)
+      const result = await createPitch(prevState, formData, pitch)
 
-      //console.log(result)
+      console.log(result)
 
-      //if (result.status == 'SUCCESS') {
-      //  toast({
-       // title: 'Success',
-      //  description: 'Your startup has beed created succesccfully',
-      //  variant: 'destructive'
-      //  })
+      if (result.status == 'SUCCESS') {
+        toast({
+        title: 'Success',
+        description: 'Your startup has beed created succesccfully',
+        variant: 'destructive'
+        })
         
-      //  router.push(`/startup/${result.id}`)
-     // }
+        router.push(`/startup/${result._id}`)
+      }
 
       
-      //return result
+      return result
 
     } catch (error) {
         if (error instanceof z.ZodError) {
