@@ -1,12 +1,17 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useActionState, useState } from 'react'
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Rocket, Image, Tags, MessageSquare, PresentationIcon, Send } from "lucide-react";
 import MDEditor from '@uiw/react-md-editor';
+import { formSchema } from '@/lib/validation';
+import {z} from 'zod'
+import { useToast } from '@/hooks/use-toast';
+import { createPitch } from '@/lib/actions';
+import { useRouter } from 'next/navigation';
 
 
 const StartupForm = () => {
@@ -14,11 +19,76 @@ const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string,string>>({})
   
   const [pitch, setPitch] = useState("")
+  const {toast} = useToast()
+  const router = useRouter();
 
-  const isPending = false;
+  const handleFormSubmit = async (prevState: any, formData: FormData) => {
+    try {
+      const formValues = {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        category: formData.get("category") as string,
+        link: formData.get("link") as string,
+        pitch
+      }
+
+      await formSchema.parseAsync(formValues)
+
+      console.log(formValues)
+
+      const result = await createPitch(prevState, formData, pitch)
+
+      console.log(result)
+
+      if (result.status == 'SUCCESS') {
+        toast({
+        title: 'Success',
+        description: 'Your startup has beed created succesccfully',
+        variant: 'destructive'
+        })
+        
+        router.push(`/startup/${result._id}`)
+      }
+
+      
+      return result
+
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+          const fieldErrors = error.flatten().fieldErrors;
+
+          setErrors(fieldErrors as unknown as Record<string, string>);
+
+          toast({
+            title: 'Error',
+            description: 'Please check your inputs and try again',
+            variant: 'destructive'
+          })
+
+          return { ...prevState, error: 'Validation failed', status: "ERROR"}
+        }
+
+      toast({
+          title: 'Error',
+          description: 'Please check your inputs and try again',
+          variant: 'destructive'
+        })
+      
+      return {
+        ...prevState,
+        error: 'An unexpected error has ocurred',
+        status:  "ERROR",
+      }
+      
+    } 
+  }  
+
+  const [state, formAction, isPending] = useActionState(handleFormSubmit,  {error: '', status: "INITIAL,"} )
+
+  
 
   return (
-    <form action={() => {}}>
+    <form action={formAction}>
       <Card className="max-w-2xl mx-auto  backdrop-blur-sm shadow-xl">
         <CardContent className="p-6">
           <div className="flex items-center justify-center mb-8">
@@ -86,10 +156,10 @@ const StartupForm = () => {
                 className="border-2 border-purple-100 focus:border-purple-500 transition-colors" 
                 placeholder="Paste your image or video URL"
                 required
-                id='media'
-                name='media'
+                id='link'
+                name='link'
               />
-              {errors.media && <p>{errors.media}</p>}
+              {errors.link && <p>{errors.link}</p>}
             </div>
 
             <div className="space-y-2">
@@ -120,6 +190,7 @@ const StartupForm = () => {
               <Button 
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-2 rounded-full transform transition-transform hover:scale-105"
                 disabled={isPending}
+                type='submit'
               >
                 {isPending ? 'Submiting...' : 'Submit your startup'}
                 <Send/>
