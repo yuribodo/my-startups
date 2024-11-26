@@ -23,8 +23,6 @@ The My Startups Project is designed to help entrepreneurs showcase their startup
 - **React**: A JavaScript library for building user interfaces. It allows us to create reusable UI components.
 - **TypeScript**: A superset of JavaScript, offering static type-checking and the latest ECMAScript features.
 - **TailwindCSS**: A utility-first CSS framework packed with classes like `flex`, `pt-4`, `text-center` and more to style your websites without leaving your HTML.
-- **React-Router-Dom**: A routing library for React, enabling navigation among views.
-- **Jest**: A delightful JavaScript Testing Framework with a focus on simplicity.
 - **Next.js**: A React framework that enables server-side rendering and static site generation, offering fast performance and SEO benefits. It also includes features like file-based routing, API routes, and built-in CSS and JavaScript bundling.
 - **shadcn**: A UI component library for React that provides accessible and customizable components styled with TailwindCSS, allowing for quick and consistent UI development.
 
@@ -32,7 +30,6 @@ The My Startups Project is designed to help entrepreneurs showcase their startup
 
 - **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
 - **TypeScript**: Brings static typing to JavaScript, ensuring a more predictable runtime behavior.
-- **Jest**: Used for writing unit and integration tests for the backend.
 - **Next.js**: A full-stack React framework that supports server-side rendering and API routes, allowing for building both frontend and backend logic within the same application.
 - **Sanity**: A headless CMS that allows for structured content management, offering a flexible schema system and real-time collaboration. Sanity provides APIs to fetch and manage content, making it ideal for dynamic web applications.
 
